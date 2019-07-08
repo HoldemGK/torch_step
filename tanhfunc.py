@@ -3,12 +3,12 @@ import torch
 class SineNet(torch.nn.Module):
     def __init__(self, n_hiden_neurons):
         super().__init__()
-        n = n_hiden_neurons
-        self.fc1 = torch.nn.Linear(1, n)
+        NUMNE = n_hiden_neurons
+        self.fc1 = torch.nn.Linear(1, NUMNE)
         self.act1 = torch.nn.Tanh()
-        self.fc2 = torch.nn.Linear(n, n)
+        self.fc2 = torch.nn.Linear(NUMNE, NUMNE)
         self.act2 = torch.nn.Tanh()
-        self.fc3 = torch.nn.Linear(n, 1)
+        self.fc3 = torch.nn.Linear(NUMNE, 1)
 
     def forward(self, x):
         x = self.fc1(x)
