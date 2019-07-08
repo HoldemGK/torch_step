@@ -18,7 +18,7 @@ class RegressionNet(torch.nn.Module):
         x = self.fc3(x)
         return x
 
-net = RegressionNet()
+net = RegressionNet(20)
 
 def target_function(x):
     return 2**x * torch.sin(2**-x)
@@ -43,6 +43,4 @@ def metric(pred, target):
 optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
 
 def loss(pred, target):
-    squares = abs(pred - target)
-    return squares.mean()
-print (loss(10, 20))
+    return (pred - target).abs().mean()
