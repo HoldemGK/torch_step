@@ -55,3 +55,11 @@ class SineNet(torch.nn.Module):
 sine_net = SineNet(3)
 
 #Prediction
+def predict(net, x, y):
+    y_pred = net.forward(x)
+    plt.plot(x.numpy(), y.numpy(), 'o', label='Ground truth')
+    plt.plot(x.numpy(), y_pred.data.numpy(), 'o', c='r', label='Prediction')
+    plt.legend(loc='upper left')
+    plt.xlabel('$x$')
+    plt.ylabel('$x$')
+predict(sine_net, x_validation, y_validation)
