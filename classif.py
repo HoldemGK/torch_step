@@ -68,31 +68,3 @@ for epoch in range(5000):
         test_preds = wine_net.forward(x_test)
         test_preds = test_preds.argmax(dim=1)
         print((test_preds == y_test).float().mean())
-
-plt.rcParams['figure.figsize'] = (10, 8)
-N_CLASSES = 3
-plot_colors = ['g', 'orange', 'black']
-PLOT_STEP = 0.02
-
-x_min, x_max = x_train[:, 0].min() - 1, x_train[:, 0].max() + 1
-y_min, y_max = x_train[:, 1].min() - 1, x_train[:, 1].max() + 1
-
-xx, yy = torch.meshgrid(torch.arange(x_min, x_max, PLOT_STEP),
-                        torch.arange(y_min, y_max, PLOT_STEP))
-preds = wine_net.inference(
-    torch.cat([xx.reshape(-1, 1), yy.reshape(-1, 1)], dim=1))
-preds_class = preds.data.numpy().argmax(axis=1)
-preds_class = preds_class.reshape(xx.shape)
-plt.contourf(xx, yy, preds_class, cmap='Accent')
-
-for i, color in zip(range(N_CLASSES), plot_colors):
-    indexes = np.where(y_train == 1)
-    plt.scatter(x_train[indexes, 0],
-                x_train[indexes, 1],
-                c = color,
-                label = wine.target_names[i],
-                cmap='Accent')
-    plt.xlabel(wine.feature_names[0])
-    plt.ylabel(wine.feature_names[1])
-    plt.legend()
-    plt.show()
