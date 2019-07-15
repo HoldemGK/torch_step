@@ -8,8 +8,8 @@ np.random.seed(0)
 torch.manual_seed(0)
 torch.cuda.manual_seed(0)
 torch.backends.cudnn.deterministic = True
-MNIST_train = torchvision.datasets.MNIST('./', download=True, train=True)
-MNIST_test = torchvision.datasets.MNIST('./', download=True, train=False)
+MNIST_train = torchvision.datasets.MNIST('./bin', download=True, train=True)
+MNIST_test = torchvision.datasets.MNIST('./bin', download=True, train=False)
 X_train = MNIST_train.train_data
 y_train = MNIST_train.train_labels
 X_test = MNIST_test.test_data
