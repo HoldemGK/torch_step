@@ -36,7 +36,7 @@ class MNISTNet(torch.nn.Module):
         x = self.fc2(x)
         return x
 
-mnist_net = MNISTNet(100)
+mnist_net = MNISTNet(300)
 
 torch.cuda.is_available()
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -45,13 +45,13 @@ list(mnist_net.parameters())
 
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(mnist_net.parameters(), lr=1.0e-3)
-batch_size = 100
+batch_size = 2048
 test_accuracy_history = []
 test_loss_history = []
 X_test = X_test.to(device)
 y_test = y_test.to(device)
 
-for epoch in range(50):
+for epoch in range(80):
     order = np.random.permutation(len(X_train))
 
     for start_index in range(0, len(X_train), batch_size):
@@ -77,5 +77,6 @@ for epoch in range(50):
     print(accuracy)
 
 plt.plot(test_accuracy_history)
+plt.show()
 plt.plot(test_loss_history)
 plt.show()
