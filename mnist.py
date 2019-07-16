@@ -2,6 +2,7 @@ import torch
 import random
 import numpy as np
 import torchvision.datasets
+import matplotlib.pyplot as plt
 
 random.seed(0)
 np.random.seed(0)
@@ -37,6 +38,44 @@ class MNISTNet(torch.nn.Module):
 
 mnist_net = MNISTNet(100)
 
+torch.cuda.is_available()
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+mnist_net = mnist_net.to(device)
+list(mnist_net.parameters())
+
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(mnist_net.parameters(), lr=1.0e-3)
 batch_size = 100
+test_accuracy_history = []
+test_loss_history = []
+X_test = X_test.to(device)
+y_test = y_test.to(device)
+
+for epoch in range(50):
+    order = np.random.permutation(len(X_train))
+
+    for start_index in range(0, len(X_train), batch_size):
+        optimizer.zero_grad()
+
+        batch_indexes = order[start_index:start_index+batch_size]
+
+        X_batch = X_train[batch_indexes].to(device)
+        y_batch = y_train[batch_indexes].to(device)
+
+        train_preds = mnist_net.forward(X_batch)
+
+        loss_value = loss(train_preds, y_batch)
+        loss_value.backward()
+
+        optimizer.step()
+
+    test_preds = mnist_net.forward(X_test)
+    test_loss_history.append(loss(test_preds, y_test))
+
+    accuracy = (test_preds.argmax(dim=1) == y_test).float().mean()
+    test_accuracy_history.append(accuracy)
+    print(accuracy)
+
+plt.plot(test_accuracy_history)
+plt.plot(test_loss_history)
+plt.show()
