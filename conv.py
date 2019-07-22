@@ -69,6 +69,7 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 lenet5 = lenet5.to(device)
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(lenet5.parameters(), lr=1.0e-3)
+#optimizer = torch.optim.SGD(lenet5.parameters(), momentum=0.7, lr=0.001)
 
 batch_size = 100
 
@@ -78,7 +79,7 @@ test_loss_history = []
 X_test = X_test.to(device)
 y_test = y_test.to(device)
 
-for epoch in range(10000):
+for epoch in range(500):
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
         optimizer.zero_grad()
