@@ -27,19 +27,19 @@ class LeNet5(torch.nn.Module):
 
         self.conv1 = torch.nn.Conv2d(
             in_channels=1, out_channels=6, kernel_size=5, padding=2)
-        self.act1  = torch.nn.Tanh()
-        self.pool1 = torch.nn.AvgPool2d(kernel_size=2, stride=2)
+        self.act1  = torch.nn.ReLU()
+        self.pool1 = torch.nn.MaxPool2d(kernel_size=2, stride=2)
 
         self.conv2 = torch.nn.Conv2d(
             in_channels=6, out_channels=16, kernel_size=5, padding=0)
-        self.act2  = torch.nn.Tanh()
-        self.pool2 = torch.nn.AvgPool2d(kernel_size=2, stride=2)
+        self.act2  = torch.nn.ReLU()
+        self.pool2 = torch.nn.MaxPool2d(kernel_size=2, stride=2)
 
         self.fc1   = torch.nn.Linear(5 * 5 * 16, 120)
-        self.act3  = torch.nn.Tanh()
+        self.act3  = torch.nn.ReLU()
 
         self.fc2   = torch.nn.Linear(120, 84)
-        self.act4  = torch.nn.Tanh()
+        self.act4  = torch.nn.ReLU()
 
         self.fc3   = torch.nn.Linear(84, 10)
 
@@ -68,10 +68,10 @@ lenet5 = LeNet5()
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 lenet5 = lenet5.to(device)
 loss = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(lenet5.parameters(), lr=1.0e-3)
+optimizer = torch.optim.Adam(lenet5.parameters(), lr=1.0e-4)
 #optimizer = torch.optim.SGD(lenet5.parameters(), momentum=0.7, lr=0.001)
 
-batch_size = 100
+batch_size = 200
 
 test_accuracy_history = []
 test_loss_history = []
@@ -79,7 +79,7 @@ test_loss_history = []
 X_test = X_test.to(device)
 y_test = y_test.to(device)
 
-for epoch in range(500):
+for epoch in range(100):
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
         optimizer.zero_grad()
