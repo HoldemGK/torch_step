@@ -1,6 +1,19 @@
-import torch
-in_planes = torch.tensor([[4, 2, -1],[-6, 0, 5],[3, 2, 2]])
-out_planes = torch.tensor([[0, 1, 2],[1, -1, 0],[1, 0, -2]])
+import math
+import os
+import random
+import re
+import sys
 
-cnn = torch.conv_transpose2d(in_planes, out_planes, stride=2, padding=1)
-print(cnn)
+# Complete the solve function below.
+def solve(meal_cost, tip_percent, tax_percent):
+    total_cost = meal_cost * (1 + (tip_percent + tax_percent) / 100)
+    print(int(total_cost))
+
+if __name__ == '__main__':
+    meal_cost = float(input())
+
+    tip_percent = int(input())
+
+    tax_percent = int(input())
+
+    solve(meal_cost, tip_percent, tax_percent)
